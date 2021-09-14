@@ -6,11 +6,12 @@ namespace Model
     public class Track
     {
         public string Name;
-        public LinkedList<Section> sections;
+        public LinkedList<Section> Sections;
 
-        public Track(string name, SectionTypes[] sections)
+        public Track(string name, LinkedList<Section> sections)
         {
-
+            Name = name;
+            Sections = sections;
         }
     }
 }
