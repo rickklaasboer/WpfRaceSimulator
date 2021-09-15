@@ -7,6 +7,7 @@ namespace Controller
     public static class Data
     {
         public static Competition Competition;
+        public static Race CurrentRace;
 
         public static void Initialize()
         {
@@ -24,6 +25,16 @@ namespace Controller
         public static void AddTracks()
         {
             Competition.Tracks = new Queue<Track>(new Track[] { new Track("Track 1", null) });
+        }
+
+        public static void NextRace()
+        {
+            Track track = Competition.NextTrack();
+
+            if (track != null)
+            {
+                CurrentRace = new Race(track, new List<IParticipant>());
+            }
         }
     }
 }

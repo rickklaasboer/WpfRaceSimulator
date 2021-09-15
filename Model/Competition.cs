@@ -10,7 +10,13 @@ namespace Model
 
         public Track NextTrack()
         {
-            return null;
+            try
+            {
+                return Tracks.Dequeue();
+            } catch (InvalidOperationException)
+            {
+                return null;
+            }
         }
     }
 }
