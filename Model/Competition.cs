@@ -13,7 +13,8 @@ namespace Model
             try
             {
                 return Tracks.Dequeue();
-            } catch (InvalidOperationException)
+            }
+            catch (InvalidOperationException)
             {
                 return null;
             }

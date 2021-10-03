@@ -9,10 +9,10 @@ namespace racebaan
         static void Main(string[] args)
         {
             Data.Initialize();
+            Visualize.Initialize();
 
             Data.NextRace();
-
-            Console.WriteLine($"{Data.CurrentRace.Track.Name}");
+            Visualize.DrawTrack(Data.CurrentRace.Track);
 
             while (true) Thread.Sleep(100);
         }

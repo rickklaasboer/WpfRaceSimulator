@@ -24,7 +24,9 @@ namespace Controller
 
         public static void AddTracks()
         {
-            Competition.Tracks = new Queue<Track>(new Track[] { new Track("Track 1", null) });
+            Competition.Tracks = new Queue<Track>(new Track[] { new Track("Track 1", new [] {
+                SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.RightCorner})
+            });
         }
 
         public static void NextRace()
