@@ -12,27 +12,27 @@ namespace racebaan
         South,
         West
     }
-    
+
     public static class Visualize
     {
         #region graphics
 
-        private static string[] _startGridHorizontal = {"----", "# # ", " # #", "----"};
-        private static string[] _finishHorizontal = {"----", "  # ", "  # ", "----"};
-        private static string[] _straightTrackHorizontal = {"----", "    ", "    ", "----"};
-        private static string[] _rightCornerHorizontal = {"---|", "   |", "   |", "|  |"};
-        private static string[] _leftCornerHorizontal = {"|  |", "   |", "   |", "---|"};
-        
-        private static string[] _startGridVertical = {"|# |", "| #|", "|# |", "| #|"};
-        private static string[] _finishVertical = {"|  |", "|  |", "|##|", "|  |"};
-        private static string[] _straightTrackVertical = {"|  |", "|  |", "|  |", "|  |"};
-        private static string[] _rightCornerVertical = {"|  |", "   |", "   |", "---|"};
-        private static string[] _leftCornerVertical = {"|  |", "|  |", "|   ", "|---"};
-        
+        private static string[] _startGridHorizontal = { "----", "# # ", " # #", "----" };
+        private static string[] _finishHorizontal = { "----", "  # ", "  # ", "----" };
+        private static string[] _straightTrackHorizontal = { "----", "    ", "    ", "----" };
+        private static string[] _rightCornerHorizontal = { "---|", "   |", "   |", "|  |" };
+        private static string[] _leftCornerHorizontal = { "|  |", "   |", "   |", "---|" };
+
+        private static string[] _startGridVertical = { "|# |", "| #|", "|# |", "| #|" };
+        private static string[] _finishVertical = { "|  |", "|  |", "|##|", "|  |" };
+        private static string[] _straightTrackVertical = { "|  |", "|  |", "|  |", "|  |" };
+        private static string[] _rightCornerVertical = { "|  |", "   |", "   |", "---|" };
+        private static string[] _leftCornerVertical = { "|  |", "|  |", "|   ", "|---" };
+
         #endregion
-        
-        private static bool _isHorizontal = true;
-        private static int _x, _y;
+
+        private static int _x = 8;
+        private static int _y = 8;
         private static Direction _direction = Direction.East;
 
         public static void Initialize()
@@ -46,38 +46,66 @@ namespace racebaan
             {
                 Console.SetCursorPosition(_x, _y);
 
+                var isHorizontal = IsHorizontal();
+
                 switch (section.SectionType)
                 {
                     case SectionTypes.StartGrid:
-                        DrawSection(_isHorizontal ? _startGridHorizontal : _startGridVertical);
+                        DrawSection(isHorizontal ? _startGridHorizontal : _startGridVertical);
                         break;
                     case SectionTypes.Finish:
-                        DrawSection(_isHorizontal ? _finishHorizontal : _finishVertical);
+                        DrawSection(isHorizontal ? _finishHorizontal : _finishVertical);
                         break;
                     case SectionTypes.Straight:
-                        DrawSection(_isHorizontal ? _straightTrackHorizontal : _straightTrackVertical);
+                        DrawSection(isHorizontal ? _straightTrackHorizontal : _straightTrackVertical);
                         break;
                     case SectionTypes.RightCorner:
-                        DrawSection(_isHorizontal ? _rightCornerHorizontal : _rightCornerVertical);
+                        DrawSection(isHorizontal ? _rightCornerHorizontal : _rightCornerVertical);
                         DetermineDirection(section.SectionType);
-                        _isHorizontal = !_isHorizontal;
                         break;
                     case SectionTypes.LeftCorner:
-                        DrawSection(_isHorizontal ? _leftCornerHorizontal : _leftCornerVertical);
+                        DrawSection(isHorizontal ? _leftCornerHorizontal : _leftCornerVertical);
                         DetermineDirection(section.SectionType);
-                        _isHorizontal = !_isHorizontal;
                         break;
+                    default:
+                        throw new Exception("Unsupported section type");
                 }
 
-                if (_isHorizontal)
+                switch (_direction)
                 {
-                    _x += 4;
-                }
-                else
-                {
-                    _y += 4;
+                    case Direction.North:
+                        _y -= 4;
+                        break;
+                    case Direction.East:
+                        _x += 4;
+                        break;
+                    case Direction.South:
+                        _y += 4;
+                        break;
+                    case Direction.West:
+                        _x -= 4;
+                        break;
+                    default:
+                        throw new Exception("Unsupported direction");
                 }
             }
+        }
+
+        private static bool IsHorizontal()
+        {
+            return _direction == Direction.East || _direction == Direction.West;
+        }
+
+        private static bool ShouldReverse()
+        {
+            return _direction == Direction.North || _direction == Direction.West;
+        }
+
+        public static string ReverseString(string s)
+        {
+            char[] charArray = s.ToCharArray();
+            Array.Reverse(charArray);
+            return new string(charArray);
         }
 
         private static void DetermineDirection(SectionTypes sectionType)
@@ -102,39 +130,26 @@ namespace racebaan
                         Direction.South => Direction.East
                     };
                     break;
-            }  
+            }
         }
 
-        private static bool IsReversed()
-        {
-            return _direction == Direction.North || _direction == Direction.West;
-        }
-        
-        public static string ReverseString( string s )
-        {
-            char[] charArray = s.ToCharArray();
-            Array.Reverse( charArray );
-            return new string( charArray );
-        }
-        
         private static void DrawSection(string[] lines)
         {
             int y2 = _y;
             int x2 = _x;
+            bool shouldReverse = ShouldReverse();
 
-            if (IsReversed()) Array.Reverse(lines);
+            if (shouldReverse) Array.Reverse(lines);
 
             foreach (var line in lines)
             {
-                if (!IsReversed())
-                {
-                    y2++;
-                }
                 Console.SetCursorPosition(x2, y2);
-                Console.Write(IsReversed() ? ReverseString(line) : line);
+                Console.Write(shouldReverse ? ReverseString(line) : line);
+
+                y2++;
             }
 
-            if (IsReversed()) Array.Reverse(lines);
+            if (shouldReverse) Array.Reverse(lines);
         }
     }
 }

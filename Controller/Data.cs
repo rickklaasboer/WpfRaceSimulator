@@ -19,14 +19,21 @@ namespace Controller
 
         public static void AddParticipants()
         {
-            Competition.Participants = new List<IParticipant> { new Driver(), new Driver(), new Driver() }; 
+            Competition.Participants = new List<IParticipant> { new Driver(), new Driver(), new Driver() };
         }
 
         public static void AddTracks()
         {
-            Competition.Tracks = new Queue<Track>(new [] { new Track("Track 1", new [] {
-                SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight
-            })});
+            Competition.Tracks = new Queue<Track>(new[]
+            {
+                new Track("Track 1", new[]
+                {
+                    SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.Straight, SectionTypes.RightCorner,
+                    SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight,
+                    SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight,
+                    SectionTypes.Straight, SectionTypes.RightCorner
+                })
+            });
         }
 
         public static void NextRace()
