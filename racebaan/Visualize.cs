@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Model;
 
 namespace racebaan
@@ -101,9 +99,9 @@ namespace racebaan
             return _direction == Direction.North || _direction == Direction.West;
         }
 
-        public static string ReverseString(string s)
+        private static string ReverseString(string s)
         {
-            char[] charArray = s.ToCharArray();
+            var charArray = s.ToCharArray();
             Array.Reverse(charArray);
             return new string(charArray);
         }
@@ -118,7 +116,8 @@ namespace racebaan
                         Direction.East => Direction.South,
                         Direction.South => Direction.West,
                         Direction.West => Direction.North,
-                        Direction.North => Direction.East
+                        Direction.North => Direction.East,
+                        _ => throw new Exception("Unsupported prev direction")
                     };
                     break;
                 case SectionTypes.LeftCorner:
@@ -127,7 +126,8 @@ namespace racebaan
                         Direction.East => Direction.North,
                         Direction.North => Direction.West,
                         Direction.West => Direction.South,
-                        Direction.South => Direction.East
+                        Direction.South => Direction.East,
+                        _ => throw new Exception("Unsupported prev direction")
                     };
                     break;
             }
@@ -135,9 +135,9 @@ namespace racebaan
 
         private static void DrawSection(string[] lines)
         {
-            int y2 = _y;
-            int x2 = _x;
-            bool shouldReverse = ShouldReverse();
+            var y2 = _y;
+            var x2 = _x;
+            var shouldReverse = ShouldReverse();
 
             if (shouldReverse) Array.Reverse(lines);
 
