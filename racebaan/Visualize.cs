@@ -30,7 +30,7 @@ namespace racebaan
         #endregion
 
         private static int _x = 8;
-        private static int _y = 8;
+        private static int _y = 4;
         private static Direction _direction = Direction.East;
 
         public static void Initialize()

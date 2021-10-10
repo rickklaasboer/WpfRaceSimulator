@@ -42,7 +42,11 @@ namespace Controller
 
             if (track != null)
             {
-                CurrentRace = new Race(track, new List<IParticipant>());
+                CurrentRace = new Race(track, new List<IParticipant>()
+                {
+                    new Driver("Pieter"),
+                    new Driver("Henk")
+                });
             }
         }
     }
