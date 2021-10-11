@@ -3,9 +3,19 @@ namespace Model
 {
     public class Driver : IParticipant
     {
-        string IParticipant.Name { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        int IParticipant.Points { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        IEquipment IParticipant.Equipment { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        TeamColors IParticipant.TeamColor { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public string Name { get; set; }
+        public int Points { get; set; }
+        public IEquipment Equipment { get; set; }
+        public TeamColors TeamColor { get; set; }
+
+        public Driver()
+        {
+            
+        }
+
+        public Driver(string name)
+        {
+            Name = name;
+        }
     }
 }
