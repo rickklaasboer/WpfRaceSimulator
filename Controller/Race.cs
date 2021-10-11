@@ -45,28 +45,24 @@ namespace Controller
 
         public void DetermineStartingPositions()
         {
+            var index = 0;
             foreach (var section in Track.Sections)
             {
                 if (section.SectionType == SectionTypes.StartGrid)
                 {
-                    var right = true;
-                    
-                    foreach (var participant in Participants)
+
+                    var sectionData = GetSectionData(section);
+                    if (index < Participants.Count && sectionData.Left == null)
                     {
-                        var sectionData = GetSectionData(section);
+                        sectionData.Left = Participants[index++];
+                        sectionData.DistanceLeft = 0;
+                    }
 
-                        if (right)
-                        {
-                            sectionData.Right = participant;
-                        }
-                        else
-                        {
-                            sectionData.Left = participant;
-                        }
-
-                        _positions[section] = sectionData;
-                        right = !right;
-                    }      
+                    if (index < Participants.Count && sectionData.Right == null)
+                    {
+                        sectionData.Right = Participants[index++];
+                        sectionData.DistanceRight = 10;
+                    }
                 }
             }
         }

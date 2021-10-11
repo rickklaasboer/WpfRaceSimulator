@@ -1,4 +1,5 @@
 using System;
+using Controller;
 using Model;
 
 namespace racebaan
@@ -15,23 +16,24 @@ namespace racebaan
     {
         #region graphics
 
-        private static string[] _startGridHorizontal = { "----", "# # ", " # #", "----" };
-        private static string[] _finishHorizontal = { "----", "  # ", "  # ", "----" };
-        private static string[] _straightTrackHorizontal = { "----", "    ", "    ", "----" };
-        private static string[] _rightCornerHorizontal = { "---|", "   |", "   |", "|  |" };
-        private static string[] _leftCornerHorizontal = { "|  |", "   |", "   |", "---|" };
+        private static string[] _startGridHorizontal = {"----", "  L  ", "   R", "----"};
+        private static string[] _finishHorizontal = {"----", "  # ", "  # ", "----"};
+        private static string[] _straightTrackHorizontal = {"----", "    ", "    ", "----"};
+        private static string[] _rightCornerHorizontal = {"---|", "   |", "   |", "|  |"};
+        private static string[] _leftCornerHorizontal = {"|  |", "   |", "   |", "---|"};
 
-        private static string[] _startGridVertical = { "|# |", "| #|", "|# |", "| #|" };
-        private static string[] _finishVertical = { "|  |", "|  |", "|##|", "|  |" };
-        private static string[] _straightTrackVertical = { "|  |", "|  |", "|  |", "|  |" };
-        private static string[] _rightCornerVertical = { "|  |", "   |", "   |", "---|" };
-        private static string[] _leftCornerVertical = { "|  |", "|  |", "|   ", "|---" };
+        private static string[] _startGridVertical = {"|# |", "| #|", "|# |", "| #|"};
+        private static string[] _finishVertical = {"|  |", "|  |", "|##|", "|  |"};
+        private static string[] _straightTrackVertical = {"|  |", "|  |", "|  |", "|  |"};
+        private static string[] _rightCornerVertical = {"|  |", "   |", "   |", "---|"};
+        private static string[] _leftCornerVertical = {"|  |", "|  |", "|   ", "|---"};
 
         #endregion
 
         private static int _x = 8;
         private static int _y = 4;
         private static Direction _direction = Direction.East;
+        private static Section _currentSection;
 
         public static void Initialize()
         {
@@ -42,6 +44,7 @@ namespace racebaan
         {
             foreach (var section in track.Sections)
             {
+                _currentSection = section;
                 Console.SetCursorPosition(_x, _y);
 
                 var isHorizontal = IsHorizontal();
@@ -106,6 +109,12 @@ namespace racebaan
             return new string(charArray);
         }
 
+        private static string PlaceParticipants(string input, IParticipant p1, IParticipant p2)
+        {
+            return input.Replace("L", p1.Name.Substring(0, 1))
+                .Replace("R", p2.Name.Substring(0, 1));
+        }
+
         private static void DetermineDirection(SectionTypes sectionType)
         {
             switch (sectionType)
@@ -143,8 +152,15 @@ namespace racebaan
 
             foreach (var line in lines)
             {
+                string newLine = line;
+                if (_currentSection.SectionType == SectionTypes.StartGrid)
+                {
+                    newLine = PlaceParticipants(line, Data.CurrentRace.GetSectionData(_currentSection).Left,
+                        Data.CurrentRace.GetSectionData(_currentSection).Right);
+                }
+
                 Console.SetCursorPosition(x2, y2);
-                Console.Write(shouldReverse ? ReverseString(line) : line);
+                Console.Write(shouldReverse ? ReverseString(newLine) : newLine);
 
                 y2++;
             }

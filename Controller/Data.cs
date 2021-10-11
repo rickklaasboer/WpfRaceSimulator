@@ -19,7 +19,7 @@ namespace Controller
 
         public static void AddParticipants()
         {
-            Competition.Participants = new List<IParticipant> { new Driver(), new Driver(), new Driver() };
+            Competition.Participants = new List<IParticipant> {new Driver(), new Driver(), new Driver()};
         }
 
         public static void AddTracks()
@@ -28,10 +28,12 @@ namespace Controller
             {
                 new Track("Track 1", new[]
                 {
-                    SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.Straight, SectionTypes.RightCorner,
-                    SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight,
-                    SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight,
-                    SectionTypes.Straight, SectionTypes.RightCorner
+                    SectionTypes.StartGrid, SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.RightCorner,
+                    SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight
                 })
             });
         }
@@ -45,7 +47,9 @@ namespace Controller
                 CurrentRace = new Race(track, new List<IParticipant>()
                 {
                     new Driver("Pieter"),
-                    new Driver("Henk")
+                    new Driver("Henk"),
+                    new Driver("Max"),
+                    new Driver("Tjeerd"),
                 });
             }
         }
