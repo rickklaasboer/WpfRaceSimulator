@@ -155,8 +155,10 @@ namespace racebaan
                 string newLine = line;
                 if (_currentSection.SectionType == SectionTypes.StartGrid)
                 {
-                    newLine = PlaceParticipants(line, Data.CurrentRace.GetSectionData(_currentSection).Left,
-                        Data.CurrentRace.GetSectionData(_currentSection).Right);
+                    var p1 = Data.CurrentRace.GetSectionData(_currentSection).Left;
+                    var p2 = Data.CurrentRace.GetSectionData(_currentSection).Right;
+
+                    newLine = PlaceParticipants(line, p1, p2);
                 }
 
                 Console.SetCursorPosition(x2, y2);

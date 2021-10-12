@@ -50,7 +50,6 @@ namespace Controller
             {
                 if (section.SectionType == SectionTypes.StartGrid)
                 {
-
                     var sectionData = GetSectionData(section);
                     if (index < Participants.Count && sectionData.Left == null)
                     {
