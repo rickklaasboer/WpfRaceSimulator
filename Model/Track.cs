@@ -25,5 +25,29 @@ namespace Model
             
             return sectionList;
         }
+
+        public Section GetNextSection(Section currentSection)
+        {
+            LinkedListNode<Section> node = Sections.Find(currentSection);
+
+            if (node != null && node.Next != null)
+            {
+                return node.Next.Value;   
+            }
+
+            return null;
+        }
+
+        public Section GetPreviousSection(Section currentSection)
+        {
+            LinkedListNode<Section> node = Sections.Find(currentSection);
+
+            if (node != null && node.Previous != null)
+            {
+                return node.Previous.Value;   
+            }
+
+            return null;
+        }
     }
 }

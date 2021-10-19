@@ -174,7 +174,6 @@ namespace racebaan
         
         private static void OnDriversChanged(object sender, DriversChangedEventArgs e)
         {
-            Console.WriteLine("kaas");
             DrawTrack(e.Track);
         }
     }
