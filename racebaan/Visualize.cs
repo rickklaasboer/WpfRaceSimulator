@@ -35,9 +35,11 @@ namespace racebaan
         private static Direction _direction = Direction.East;
         private static Section _currentSection;
 
+        private static Race _currentRace = Data.CurrentRace;
+
         public static void Initialize()
         {
-            // ?
+            _currentRace.DriversChanged += OnDriversChanged;
         }
 
         public static void DrawTrack(Track track)
@@ -168,6 +170,12 @@ namespace racebaan
             }
 
             if (shouldReverse) Array.Reverse(lines);
+        }
+        
+        private static void OnDriversChanged(object sender, DriversChangedEventArgs e)
+        {
+            Console.WriteLine("kaas");
+            DrawTrack(e.Track);
         }
     }
 }

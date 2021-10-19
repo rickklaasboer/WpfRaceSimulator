@@ -1,5 +1,4 @@
-﻿using System;
-namespace Model
+﻿namespace Model
 {
     public class Driver : IParticipant
     {
@@ -13,9 +12,10 @@ namespace Model
             
         }
 
-        public Driver(string name)
+        public Driver(string name, IEquipment equipment)
         {
             Name = name;
+            Equipment = equipment;
         }
     }
 }

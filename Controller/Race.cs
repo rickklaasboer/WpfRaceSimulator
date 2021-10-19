@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Timers;
 using Model;
 
 namespace Controller
@@ -12,15 +13,32 @@ namespace Controller
 
         private Random _random;
         private Dictionary<Section, SectionData> _positions = new Dictionary<Section, SectionData>();
+        private Timer _timer = new Timer(500);
+        
+        public event EventHandler<DriversChangedEventArgs> DriversChanged;
 
         public Race(Track track, List<IParticipant> participant)
         {
             Track = track;
             Participants = participant;
             _random = new Random(DateTime.Now.Millisecond);
+
+            _timer.Elapsed += OnTimedEvent;
             
             DetermineStartingPositions();
+            RandomizeEquipment();
         }
+
+        private void OnTimedEvent(object sender, ElapsedEventArgs args)
+        {
+            DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track));
+        }
+
+        public void Start()
+        {
+            _timer.Start();
+        }
+        
 
         public SectionData GetSectionData(Section section) {
             if (_positions.ContainsKey(section))
