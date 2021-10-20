@@ -16,17 +16,17 @@ namespace racebaan
     {
         #region graphics
 
-        private static string[] _startGridHorizontal = {"----", "  L  ", "   R", "----"};
-        private static string[] _finishHorizontal = {"----", "  # ", "  # ", "----"};
-        private static string[] _straightTrackHorizontal = {"----", "    ", "    ", "----"};
-        private static string[] _rightCornerHorizontal = {"---|", "   |", "   |", "|  |"};
-        private static string[] _leftCornerHorizontal = {"|  |", "   |", "   |", "---|"};
+        private static string[] _startGridHorizontal = { "----", "L    ", "R   ", "----" };
+        private static string[] _finishHorizontal = { "----", "L # ", "R # ", "----" };
+        private static string[] _straightTrackHorizontal = { "----", "L   ", "R   ", "----" };
+        private static string[] _rightCornerHorizontal = { "---|", "L  |", "R  |", "|  |" };
+        private static string[] _leftCornerHorizontal = { "|  |", "L  |", "R  |", "---|" };
 
-        private static string[] _startGridVertical = {"|# |", "| #|", "|# |", "| #|"};
-        private static string[] _finishVertical = {"|  |", "|  |", "|##|", "|  |"};
-        private static string[] _straightTrackVertical = {"|  |", "|  |", "|  |", "|  |"};
-        private static string[] _rightCornerVertical = {"|  |", "   |", "   |", "---|"};
-        private static string[] _leftCornerVertical = {"|  |", "|  |", "|   ", "|---"};
+        private static string[] _startGridVertical = { "|RL|", "|  |", "|  |", "|  |" };
+        private static string[] _finishVertical = { "|RL|", "|  |", "|##|", "|  |" };
+        private static string[] _straightTrackVertical = { "|RL|", "|  |", "|  |", "|  |" };
+        private static string[] _rightCornerVertical = { "|RL|", "   |", "   |", "---|" };
+        private static string[] _leftCornerVertical = { "|RL|", "|  |", "|   ", "|---" };
 
         #endregion
 
@@ -113,8 +113,10 @@ namespace racebaan
 
         private static string PlaceParticipants(string input, IParticipant p1, IParticipant p2)
         {
-            return input.Replace("L", p1.Name.Substring(0, 1))
-                .Replace("R", p2.Name.Substring(0, 1));
+            String str = (string) input.Clone();
+
+            return str.Replace("L", p1?.Name?.Substring(0, 1) ?? " ")
+                .Replace("R", p2?.Name?.Substring(0, 1) ?? " ");
         }
 
         private static void DetermineDirection(SectionTypes sectionType)
@@ -155,13 +157,11 @@ namespace racebaan
             foreach (var line in lines)
             {
                 string newLine = line;
-                if (_currentSection.SectionType == SectionTypes.StartGrid)
-                {
-                    var p1 = Data.CurrentRace.GetSectionData(_currentSection).Left;
-                    var p2 = Data.CurrentRace.GetSectionData(_currentSection).Right;
 
-                    newLine = PlaceParticipants(line, p1, p2);
-                }
+                var p1 = Data.CurrentRace.GetSectionData(_currentSection).Left;
+                var p2 = Data.CurrentRace.GetSectionData(_currentSection).Right;
+
+                newLine = PlaceParticipants(line, p1, p2);
 
                 Console.SetCursorPosition(x2, y2);
                 Console.Write(shouldReverse ? ReverseString(newLine) : newLine);
@@ -171,7 +171,7 @@ namespace racebaan
 
             if (shouldReverse) Array.Reverse(lines);
         }
-        
+
         private static void OnDriversChanged(object sender, DriversChangedEventArgs e)
         {
             DrawTrack(e.Track);

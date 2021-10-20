@@ -22,7 +22,7 @@ namespace Model
             {
                 sectionList.AddLast(new Section(section));
             }
-            
+
             return sectionList;
         }
 
@@ -30,9 +30,14 @@ namespace Model
         {
             LinkedListNode<Section> node = Sections.Find(currentSection);
 
-            if (node != null && node.Next != null)
+            if (node != null)
             {
-                return node.Next.Value;   
+                if (node.Next == null)
+                {
+                    return Sections.First.Value;
+                }
+
+                return node.Next.Value;
             }
 
             return null;
@@ -42,9 +47,14 @@ namespace Model
         {
             LinkedListNode<Section> node = Sections.Find(currentSection);
 
-            if (node != null && node.Previous != null)
+            if (node != null)
             {
-                return node.Previous.Value;   
+                if (node.Previous == null)
+                {
+                    return Sections.Last.Value;
+                }
+
+                return node.Previous.Value;
             }
 
             return null;
