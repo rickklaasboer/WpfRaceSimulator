@@ -1,7 +1,7 @@
 ﻿using System.Threading;
 using Controller;
 
-namespace racebaan
+namespace ConsoleView
 {
     class Program
     {

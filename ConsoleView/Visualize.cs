@@ -2,7 +2,7 @@ using System;
 using Controller;
 using Model;
 
-namespace racebaan
+namespace ConsoleView
 {
     enum Direction
     {
