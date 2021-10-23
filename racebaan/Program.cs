@@ -13,7 +13,7 @@ namespace racebaan
 
             Visualize.Initialize();
             Visualize.DrawTrack(Data.CurrentRace.Track);
-            
+
             Data.CurrentRace.Start();
 
             for (;;) Thread.Sleep(100);

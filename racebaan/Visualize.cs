@@ -44,6 +44,9 @@ namespace racebaan
 
         public static void DrawTrack(Track track)
         {
+            Console.SetCursorPosition(0, 0);
+            Console.Write(track.Name);
+
             foreach (var section in track.Sections)
             {
                 _currentSection = section;
@@ -113,7 +116,7 @@ namespace racebaan
 
         private static string PlaceParticipants(string input, IParticipant p1, IParticipant p2)
         {
-            String str = (string) input.Clone();
+            String str = (string)input.Clone();
 
             return str.Replace("L", p1?.Name?.Substring(0, 1) ?? " ")
                 .Replace("R", p2?.Name?.Substring(0, 1) ?? " ");
@@ -172,9 +175,33 @@ namespace racebaan
             if (shouldReverse) Array.Reverse(lines);
         }
 
+        private static void DrawLaps()
+        {
+            Console.SetCursorPosition(0, 1);
+            Console.Write("Laps: ");
+
+            foreach (var (participant, laps) in _currentRace._drivenLaps)
+            {
+                Console.Write($"{participant.Name}: {laps} - ");
+            }
+        }
+
+        private static void DrawFinished()
+        {
+            Console.SetCursorPosition(0, 2);
+            Console.Write("Finished: ");
+
+            foreach (var (participant, position) in _currentRace._finished)
+            {
+                Console.Write($"{participant.Name}: #{position} - ");
+            }
+        }
+
         private static void OnDriversChanged(object sender, DriversChangedEventArgs e)
         {
             DrawTrack(e.Track);
+            DrawLaps();
+            DrawFinished();
         }
     }
 }

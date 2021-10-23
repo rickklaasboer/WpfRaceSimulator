@@ -17,12 +17,18 @@ namespace Controller
             AddTracks();
         }
 
-        public static void AddParticipants()
+        private static void AddParticipants()
         {
-            Competition.Participants = new List<IParticipant> { new Driver(), new Driver(), new Driver() };
+            Competition.Participants = new List<IParticipant>
+            {
+                new Driver("Pieter", new Car(1, 1, 25, false)),
+                new Driver("Henk", new Car(1, 1, 25, false)),
+                new Driver("Max", new Car(1, 1, 25, false)),
+                new Driver("Tjeerd", new Car(1, 1, 25, false))
+            };
         }
 
-        public static void AddTracks()
+        private static void AddTracks()
         {
             Competition.Tracks = new Queue<Track>(new[]
             {
@@ -44,13 +50,7 @@ namespace Controller
 
             if (track != null)
             {
-                CurrentRace = new Race(track, new List<IParticipant>()
-                {
-                    new Driver("Pieter", new Car(1, 1, 25, false)),
-                    new Driver("Henk", new Car(1, 1, 25, false)),
-                    new Driver("Max", new Car(1, 1, 25, false)),
-                    new Driver("Tjeerd", new Car(1, 1, 25, false))
-                });
+                CurrentRace = new Race(track, Competition.Participants, 1);
             }
         }
     }
