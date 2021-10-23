@@ -22,8 +22,42 @@ namespace Model
             {
                 sectionList.AddLast(new Section(section));
             }
-            
+
             return sectionList;
+        }
+
+        public Section GetNextSection(Section currentSection)
+        {
+            LinkedListNode<Section> node = Sections.Find(currentSection);
+
+            if (node != null)
+            {
+                if (node.Next == null)
+                {
+                    return Sections.First.Value;
+                }
+
+                return node.Next.Value;
+            }
+
+            return null;
+        }
+
+        public Section GetPreviousSection(Section currentSection)
+        {
+            LinkedListNode<Section> node = Sections.Find(currentSection);
+
+            if (node != null)
+            {
+                if (node.Previous == null)
+                {
+                    return Sections.Last.Value;
+                }
+
+                return node.Previous.Value;
+            }
+
+            return null;
         }
     }
 }

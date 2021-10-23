@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Collections.Generic;
+
 namespace Model
 {
     public interface IParticipant
@@ -7,5 +8,11 @@ namespace Model
         public int Points { get; set; }
         public IEquipment Equipment { get; set; }
         public TeamColors TeamColor { get; set; }
+
+        public int GetMovementSpeed();
+
+        public bool WillBreak();
+
+        public bool WillRecover();
     }
 }
