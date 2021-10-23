@@ -1,0 +1,52 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net5.0-windows</TargetFramework>
+        <UseWPF>true</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Resources" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\Cars\car-blue.png" />
+      <Content Include="Resources\Cars\car-blue.png" />
+      <None Remove="Resources\Cars\car-destroyed.png" />
+      <Content Include="Resources\Cars\car-destroyed.png" />
+      <None Remove="Resources\Cars\car-green.png" />
+      <Content Include="Resources\Cars\car-green.png" />
+      <None Remove="Resources\Cars\car-grey.png" />
+      <Content Include="Resources\Cars\car-grey.png" />
+      <None Remove="Resources\Cars\car-red.png" />
+      <Content Include="Resources\Cars\car-red.png" />
+      <None Remove="Resources\Cars\car-yellow.png" />
+      <Content Include="Resources\Cars\car-yellow.png" />
+      <None Remove="Resources\Tracks\corner-left.png" />
+      <Content Include="Resources\Tracks\corner-left.png" />
+      <None Remove="Resources\Tracks\corner-right.png" />
+      <Content Include="Resources\Tracks\corner-right.png" />
+      <None Remove="Resources\Tracks\finish-horizontal.png" />
+      <Content Include="Resources\Tracks\finish-horizontal.png" />
+      <None Remove="Resources\Tracks\finish-vertical.png" />
+      <Content Include="Resources\Tracks\finish-vertical.png" />
+      <None Remove="Resources\Tracks\start-grid.png" />
+      <Content Include="Resources\Tracks\start-grid.png" />
+      <None Remove="Resources\Tracks\straight-horizontal.png" />
+      <Content Include="Resources\Tracks\straight-horizontal.png" />
+      <None Remove="Resources\Tracks\straight-vertical.png" />
+      <Content Include="Resources\Tracks\straight-vertical.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="System.Drawing.Common" Version="5.0.2" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\ControllerTest\ControllerTest.csproj" />
+      <ProjectReference Include="..\Controller\Controller.csproj" />
+      <ProjectReference Include="..\Model\Model.csproj" />
+    </ItemGroup>
+
+</Project>
