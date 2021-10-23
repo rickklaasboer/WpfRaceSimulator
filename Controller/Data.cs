@@ -34,11 +34,6 @@ namespace Controller
         {
             Competition.Tracks = new Queue<Track>(new[]
             {
-                // new Track("Test track", new[]
-                // {
-                //     SectionTypes.Straight, SectionTypes.Straight, SectionTypes.StartGrid, SectionTypes.StartGrid,
-                //     SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight
-                // }),
                 new Track("Track 1", new[]
                 {
                     SectionTypes.Straight, SectionTypes.Straight, SectionTypes.StartGrid, SectionTypes.StartGrid,

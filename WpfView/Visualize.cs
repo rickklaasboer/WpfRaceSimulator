@@ -64,10 +64,10 @@ namespace WpfView
         {
             (int width, int height) = DetermineTrackSize(track);
 
-            Bitmap bitmap = ImageCache.CreateBitmap(width + 750, height + 750);
+            Bitmap bitmap = ImageCache.CreateBitmap(width + 600, height + 66);
             Graphics graphics = Graphics.FromImage(bitmap);
 
-            int x = 750, y = 150;
+            int x = 666, y = 66;
             Direction currentDirection = Direction.East;
 
             foreach (var section in track.Sections)
@@ -123,15 +123,15 @@ namespace WpfView
 
         private static void RotateSection(Bitmap img, Direction direction)
         {
-            switch ((int)direction)
+            switch (direction)
             {
-                case 0:
+                case Direction.North:
                     img.RotateFlip(RotateFlipType.Rotate270FlipNone);
                     break;
-                case 2:
+                case Direction.South:
                     img.RotateFlip(RotateFlipType.Rotate90FlipNone);
                     break;
-                case 3:
+                case Direction.West:
                     img.RotateFlip(RotateFlipType.Rotate180FlipNone);
                     break;
             }
@@ -139,37 +139,28 @@ namespace WpfView
 
         private static (int width, int height) DetermineTrackSize(Track track)
         {
-            int startX = 10, startY = 10;
-            int currentX = startX, currentY = startY;
-
             List<int> positionsX = new List<int>();
             List<int> positionsY = new List<int>();
 
-            Direction currentDirection = Direction.East; // we always start east
+            int x = 600;
+            int y = 200;
+
+            Direction currentDirection = Direction.East;
 
             foreach (var section in track.Sections)
             {
-                positionsX.Add(currentX);
-                positionsY.Add(currentY);
+                positionsX.Add(x);
+                positionsY.Add(y);
 
-                if (section.SectionType == SectionTypes.RightCorner || section.SectionType == SectionTypes.LeftCorner)
-                {
-                    currentDirection = DetermineDirection(section.SectionType, currentDirection);
-                }
+                currentDirection = DetermineDirection(section.SectionType, currentDirection);
 
-                DetermineNewCoordinates(ref currentX, ref currentY, currentDirection);
+                DetermineNewCoordinates(ref x, ref y, currentDirection);
             }
 
-            int minX = positionsX.Min();
-            int minY = positionsY.Min();
+            int width = positionsX.Max();
+            int height = positionsY.Max();
 
-            int maxX = positionsX.Max() + 1;
-            int maxY = positionsY.Max() + 1;
-
-            int width = maxX - minX;
-            int height = maxY - minY;
-
-            return (width, height);
+            return (width + x, height + y);
         }
 
         private static void DetermineNewCoordinates(ref int x, ref int y, Direction currentDirection)
