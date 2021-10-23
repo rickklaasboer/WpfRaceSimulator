@@ -7,17 +7,18 @@
         public IEquipment Equipment { get; set; }
         public TeamColors TeamColor { get; set; }
 
-        public Driver(string name, IEquipment equipment)
+        public Driver(string name, IEquipment equipment, TeamColors teamColor)
         {
             Name = name;
             Equipment = equipment;
+            TeamColor = teamColor;
         }
 
         public int GetMovementSpeed()
         {
             // TODO: make this variable
-            return 25;
-            // return Equipment.Performance * Equipment.Speed;
+            // return 25;
+            return Equipment.Performance * Equipment.Speed;
         }
     }
 }

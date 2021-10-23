@@ -23,10 +23,10 @@ namespace Controller
         {
             Competition.Participants = new List<IParticipant>
             {
-                new Driver("Pieter", new Car(1, 1, 25, false)),
-                new Driver("Henk", new Car(1, 1, 25, false)),
-                new Driver("Max", new Car(1, 1, 25, false)),
-                new Driver("Tjeerd", new Car(1, 1, 25, false))
+                new Driver("Pieter", new Car(1, 1, 25, false), TeamColors.Blue),
+                new Driver("Henk", new Car(1, 1, 25, false), TeamColors.Green),
+                new Driver("Max", new Car(1, 1, 25, false), TeamColors.Red),
+                new Driver("Tjeerd", new Car(1, 1, 25, false), TeamColors.Yellow)
             };
         }
 

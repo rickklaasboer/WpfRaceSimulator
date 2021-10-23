@@ -77,7 +77,7 @@ namespace Controller
             {
                 RemoveFinishedParticipants(sectionData);
 
-                if (sectionData.Left != null)
+                if (sectionData.Left != null && GetSectionData(Track.GetNextSection(section)).Left == null)
                 {
                     var newDistanceLeft = sectionData.DistanceLeft + sectionData.Left.GetMovementSpeed();
 
@@ -103,7 +103,7 @@ namespace Controller
                     }
                 }
 
-                if (sectionData.Right != null)
+                if (sectionData.Right != null && GetSectionData(Track.GetNextSection(section)).Right == null)
                 {
                     var newDistanceRight = sectionData.DistanceRight + sectionData.Right.GetMovementSpeed();
 
