@@ -63,7 +63,7 @@ namespace Controller
                 new Track("Track 3", new[]
                 {
                     SectionTypes.Straight, SectionTypes.Straight, SectionTypes.StartGrid, SectionTypes.StartGrid,
-                    SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight,
+                    SectionTypes.Finish, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight,
                     SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight,
                     SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.LeftCorner,
                     SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight,
