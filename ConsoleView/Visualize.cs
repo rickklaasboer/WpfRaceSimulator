@@ -124,8 +124,18 @@ namespace ConsoleView
         {
             String str = (string)input.Clone();
 
-            return str.Replace("L", p1?.Name?.Substring(0, 1) ?? " ")
-                .Replace("R", p2?.Name?.Substring(0, 1) ?? " ");
+            return str.Replace(
+                    "L",
+                    (p1?.Equipment?.IsBroken ?? false
+                        ? "X"
+                        : p1?.Name?.Substring(0, 1)) ?? " "
+                )
+                .Replace(
+                    "R",
+                    (p2?.Equipment?.IsBroken ?? false
+                        ? "X"
+                        : p2?.Name?.Substring(0, 1)) ?? " "
+                );
         }
 
         private static void DetermineDirection(SectionTypes sectionType)

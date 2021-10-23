@@ -17,7 +17,7 @@ namespace Controller
         private DateTime _startTime;
         private Random _random;
         private Dictionary<Section, SectionData> _positions = new Dictionary<Section, SectionData>();
-        private Timer _timer = new Timer(100);
+        private Timer _timer = new Timer(500);
 
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
         public event EventHandler<EventArgs> RaceFinished;
@@ -77,7 +77,8 @@ namespace Controller
             {
                 RemoveFinishedParticipants(sectionData);
 
-                if (sectionData.Left != null && GetSectionData(Track.GetNextSection(section)).Left == null)
+                if (sectionData.Left != null && !sectionData.Left.Equipment.IsBroken &&
+                    GetSectionData(Track.GetNextSection(section)).Left == null)
                 {
                     var newDistanceLeft = sectionData.DistanceLeft + sectionData.Left.GetMovementSpeed();
 
@@ -103,7 +104,8 @@ namespace Controller
                     }
                 }
 
-                if (sectionData.Right != null && GetSectionData(Track.GetNextSection(section)).Right == null)
+                if (sectionData.Right != null && !sectionData.Right.Equipment.IsBroken &&
+                    GetSectionData(Track.GetNextSection(section)).Right == null)
                 {
                     var newDistanceRight = sectionData.DistanceRight + sectionData.Right.GetMovementSpeed();
 
@@ -135,8 +137,8 @@ namespace Controller
         {
             foreach (IParticipant participant in Participants)
             {
-                participant.Equipment.Quality = _random.Next(1, 3);
-                participant.Equipment.Performance = _random.Next(1, 3);
+                participant.Equipment.Quality = _random.Next(1, 10);
+                participant.Equipment.Performance = _random.Next(1, 10);
             }
         }
 
@@ -176,8 +178,24 @@ namespace Controller
             }
         }
 
+        private void BreakParticipants()
+        {
+            foreach (var participant in Participants)
+            {
+                if (!participant.Equipment.IsBroken)
+                {
+                    participant.Equipment.IsBroken = participant.WillBreak();
+                }
+                else
+                {
+                    participant.Equipment.IsBroken = !participant.WillRecover();
+                }
+            }
+        }
+
         private void OnTimedEvent(object sender, ElapsedEventArgs args)
         {
+            BreakParticipants();
             MoveParticipants();
             DriversChanged?.Invoke(this, new DriversChangedEventArgs(Track));
         }

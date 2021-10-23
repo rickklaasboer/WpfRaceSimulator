@@ -10,5 +10,9 @@ namespace Model
         public TeamColors TeamColor { get; set; }
 
         public int GetMovementSpeed();
+
+        public bool WillBreak();
+
+        public bool WillRecover();
     }
 }

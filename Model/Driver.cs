@@ -1,4 +1,6 @@
-﻿namespace Model
+﻿using System;
+
+namespace Model
 {
     public class Driver : IParticipant
     {
@@ -17,6 +19,16 @@
         public int GetMovementSpeed()
         {
             return Equipment.Performance * Equipment.Speed;
+        }
+
+        public bool WillBreak()
+        {
+            return new Random().Next(1, 100) == 69;
+        }
+
+        public bool WillRecover()
+        {
+            return new Random().Next(1, 25) == 15;
         }
     }
 }
