@@ -26,7 +26,7 @@ namespace ConsoleView
         private static string[] _finishVertical = { "|RL|", "|  |", "|##|", "|  |" };
         private static string[] _straightTrackVertical = { "|RL|", "|  |", "|  |", "|  |" };
         private static string[] _rightCornerVertical = { "|RL|", "   |", "   |", "---|" };
-        private static string[] _leftCornerVertical = { "|RL|", "|  |", "|   ", "|---" };
+        private static string[] _leftCornerVertical = { "|RL|", "|   ", "|   ", "|---" };
 
         #endregion
 

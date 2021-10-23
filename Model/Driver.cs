@@ -16,8 +16,6 @@
 
         public int GetMovementSpeed()
         {
-            // TODO: make this variable
-            // return 25;
             return Equipment.Performance * Equipment.Speed;
         }
     }
