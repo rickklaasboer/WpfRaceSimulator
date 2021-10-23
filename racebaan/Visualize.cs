@@ -180,7 +180,7 @@ namespace racebaan
             Console.SetCursorPosition(0, 1);
             Console.Write("Laps: ");
 
-            foreach (var (participant, laps) in _currentRace._drivenLaps)
+            foreach (var (participant, laps) in _currentRace.DrivenLaps)
             {
                 Console.Write($"{participant.Name}: {laps} - ");
             }
@@ -191,7 +191,7 @@ namespace racebaan
             Console.SetCursorPosition(0, 2);
             Console.Write("Finished: ");
 
-            foreach (var (participant, position) in _currentRace._finished)
+            foreach (var (participant, position) in _currentRace.Finished)
             {
                 Console.Write($"{participant.Name}: #{position} - ");
             }

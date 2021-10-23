@@ -9,11 +9,11 @@ namespace Controller
     public class Race
     {
         public Track Track;
-        public Dictionary<IParticipant, int> _drivenLaps = new Dictionary<IParticipant, int>();
-        public Dictionary<IParticipant, int> _finished = new Dictionary<IParticipant, int>();
+        public Dictionary<IParticipant, int> DrivenLaps = new Dictionary<IParticipant, int>();
+        public Dictionary<IParticipant, int> Finished = new Dictionary<IParticipant, int>();
 
         private List<IParticipant> Participants;
-        private DateTime StartTime;
+        private DateTime _startTime;
         private Random _random;
         private Dictionary<Section, SectionData> _positions = new Dictionary<Section, SectionData>();
         private Timer _timer = new Timer(500);
@@ -44,8 +44,15 @@ namespace Controller
 
         public void Start()
         {
-            StartTime = DateTime.Now;
+            _startTime = DateTime.Now;
             _timer.Start();
+        }
+
+        private void CleanUp()
+        {
+            DriversChanged = null;
+            RaceFinished = null;
+            _timer.Stop();
         }
 
 
@@ -156,12 +163,12 @@ namespace Controller
 
         private void RemoveFinishedParticipants(SectionData sectionData)
         {
-            if (sectionData?.Left != null && _finished.ContainsKey(sectionData.Left))
+            if (sectionData?.Left != null && Finished.ContainsKey(sectionData.Left))
             {
                 sectionData.Left = null;
             }
 
-            if (sectionData?.Right != null && _finished.ContainsKey(sectionData.Right))
+            if (sectionData?.Right != null && Finished.ContainsKey(sectionData.Right))
             {
                 sectionData.Right = null;
             }
@@ -175,20 +182,20 @@ namespace Controller
 
         private void OnFinishReached(object sender, FinishReachedEventArgs args)
         {
-            var prevLaps = _drivenLaps.GetValueOrDefault(args.Participant, -1);
+            var prevLaps = DrivenLaps.GetValueOrDefault(args.Participant, -1);
 
             if (prevLaps != -1)
             {
-                _drivenLaps[args.Participant]++;
+                DrivenLaps[args.Participant]++;
 
-                if (_drivenLaps[args.Participant] >= _laps)
+                if (DrivenLaps[args.Participant] >= _laps)
                 {
                     ParticipantFinished?.Invoke(this, new ParticipantFinishedEventArgs(args.Participant));
                 }
             }
             else
             {
-                _drivenLaps[args.Participant] = 0;
+                DrivenLaps[args.Participant] = 0;
             }
         }
 
@@ -196,8 +203,8 @@ namespace Controller
         {
             var participant = args.Participant;
 
-            int value = _finished.Count + 1;
-            _finished[participant] = value;
+            int value = Finished.Count + 1;
+            Finished[participant] = value;
             Participants.Remove(participant);
 
             if (Participants.Count <= 0)
@@ -208,7 +215,7 @@ namespace Controller
 
         private void OnRaceFinished(object sender, EventArgs args)
         {
-            //
+            CleanUp();
         }
     }
 }
