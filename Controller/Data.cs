@@ -9,6 +9,8 @@ namespace Controller
         public static Competition Competition;
         public static Race CurrentRace;
 
+        public static event EventHandler<NextRaceEventArgs> NextRaceEvent;
+
         public static void Initialize()
         {
             Competition = new Competition();
@@ -40,17 +42,34 @@ namespace Controller
                     SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner,
                     SectionTypes.Straight,
                     SectionTypes.Straight, SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight
+                }),
+                new Track("Track 2", new[]
+                {
+                    SectionTypes.StartGrid, SectionTypes.StartGrid, SectionTypes.Finish, SectionTypes.Straight,
+                    SectionTypes.Straight,
+                    SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.RightCorner, SectionTypes.Straight,
+                    SectionTypes.Straight, SectionTypes.Straight, SectionTypes.LeftCorner, SectionTypes.LeftCorner,
+                    SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight,
+                    SectionTypes.RightCorner,
+                    SectionTypes.Straight, SectionTypes.RightCorner, SectionTypes.Straight, SectionTypes.Straight,
+                    SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight, SectionTypes.Straight,
+                    SectionTypes.RightCorner, SectionTypes.LeftCorner, SectionTypes.RightCorner, SectionTypes.Straight,
+                    SectionTypes.Straight, SectionTypes.RightCorner
                 })
             });
         }
 
         public static void NextRace()
         {
+            CurrentRace?.CleanUp();
+
             Track track = Competition.NextTrack();
 
             if (track != null)
             {
-                CurrentRace = new Race(track, Competition.Participants, 1);
+                CurrentRace = new Race(track, Competition.Participants, new Random().Next(2, 5));
+                NextRaceEvent?.Invoke(null, new NextRaceEventArgs(CurrentRace));
+                CurrentRace.Start();
             }
         }
     }

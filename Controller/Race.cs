@@ -11,13 +11,13 @@ namespace Controller
         public Track Track;
         public Dictionary<IParticipant, int> DrivenLaps = new Dictionary<IParticipant, int>();
         public Dictionary<IParticipant, int> Finished = new Dictionary<IParticipant, int>();
+        public int Laps;
 
         private List<IParticipant> Participants;
         private DateTime _startTime;
         private Random _random;
         private Dictionary<Section, SectionData> _positions = new Dictionary<Section, SectionData>();
-        private Timer _timer = new Timer(500);
-        private int _laps;
+        private Timer _timer = new Timer(100);
 
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
         public event EventHandler<EventArgs> RaceFinished;
@@ -29,7 +29,7 @@ namespace Controller
             Track = track;
             Participants = participant;
 
-            _laps = laps;
+            Laps = laps;
             _random = new Random(DateTime.Now.Millisecond);
 
             // Event handlers
@@ -48,10 +48,12 @@ namespace Controller
             _timer.Start();
         }
 
-        private void CleanUp()
+        public void CleanUp()
         {
             DriversChanged = null;
             RaceFinished = null;
+            ParticipantFinished = null;
+            FinishReached = null;
             _timer.Stop();
         }
 
@@ -188,7 +190,7 @@ namespace Controller
             {
                 DrivenLaps[args.Participant]++;
 
-                if (DrivenLaps[args.Participant] >= _laps)
+                if (DrivenLaps[args.Participant] >= Laps)
                 {
                     ParticipantFinished?.Invoke(this, new ParticipantFinishedEventArgs(args.Participant));
                 }
@@ -205,9 +207,8 @@ namespace Controller
 
             int value = Finished.Count + 1;
             Finished[participant] = value;
-            Participants.Remove(participant);
 
-            if (Participants.Count <= 0)
+            if (Finished.Count >= Participants.Count)
             {
                 RaceFinished?.Invoke(this, EventArgs.Empty);
             }
@@ -215,7 +216,7 @@ namespace Controller
 
         private void OnRaceFinished(object sender, EventArgs args)
         {
-            CleanUp();
+            Data.NextRace();
         }
     }
 }

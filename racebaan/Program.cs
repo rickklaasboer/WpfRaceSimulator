@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading;
+﻿using System.Threading;
 using Controller;
 
 namespace racebaan
@@ -9,12 +8,8 @@ namespace racebaan
         static void Main(string[] args)
         {
             Data.Initialize();
+            Data.NextRaceEvent += Visualize.OnNextRaceEvent;
             Data.NextRace();
-
-            Visualize.Initialize();
-            Visualize.DrawTrack(Data.CurrentRace.Track);
-
-            Data.CurrentRace.Start();
 
             for (;;) Thread.Sleep(100);
         }

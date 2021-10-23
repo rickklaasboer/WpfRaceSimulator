@@ -32,20 +32,26 @@ namespace racebaan
 
         private static int _x = 8;
         private static int _y = 4;
-        private static Direction _direction = Direction.East;
+        private static Direction _direction;
         private static Section _currentSection;
 
-        private static Race _currentRace = Data.CurrentRace;
+        private static Race _currentRace;
 
-        public static void Initialize()
+        public static void Initialize(Race race)
         {
+            Console.Clear();
+            _x = 8;
+            _y = 4;
+            _currentSection = null;
+            _currentRace = race;
+            _direction = Direction.East;
             _currentRace.DriversChanged += OnDriversChanged;
         }
 
-        public static void DrawTrack(Track track)
+        private static void DrawTrack(Track track)
         {
             Console.SetCursorPosition(0, 0);
-            Console.Write(track.Name);
+            Console.Write($"{track.Name} - {_currentRace.Laps} laps");
 
             foreach (var section in track.Sections)
             {
@@ -197,11 +203,18 @@ namespace racebaan
             }
         }
 
-        private static void OnDriversChanged(object sender, DriversChangedEventArgs e)
+        private static void OnDriversChanged(object sender, DriversChangedEventArgs args)
         {
-            DrawTrack(e.Track);
+            DrawTrack(args.Track);
             DrawLaps();
             DrawFinished();
+        }
+
+        public static void OnNextRaceEvent(object sender, NextRaceEventArgs args)
+        {
+            Initialize(args.Race);
+            _currentRace.DriversChanged += OnDriversChanged;
+            DrawTrack(_currentRace.Track);
         }
     }
 }
