@@ -32,31 +32,31 @@ namespace WpfView
             Data.NextRace();
         }
 
-        private void OnNextRaceEvent(object sender, NextRaceEventArgs e)
+        private void OnNextRaceEvent(object sender, NextRaceEventArgs args)
         {
-            // reinitialize
             ImageCache.ClearCache();
-            Visualize.Initialize(e.Race);
+            Visualize.Initialize(args.Race);
 
-            // link event
-            e.Race.DriversChanged += OnDriversChanged;
+            args.Race.DriversChanged += OnDriversChanged;
+            args.Race.RaceFinished += OnRaceFinished;
 
-            // Dispatcher is needed for execution of OnDriversChanged. Otherwise thread exceptions will occur.
-            Dispatcher.Invoke((Action)(() =>
-            {
-                // e.Race.DriversChanged += ((MainDataContext)this.DataContext).OnDriversChanged;
-            }));
+            Dispatcher.Invoke(() => { args.Race.DriversChanged += OnDriversChanged; });
         }
 
-        private void OnDriversChanged(object sender, DriversChangedEventArgs e)
+        private void OnDriversChanged(object sender, DriversChangedEventArgs args)
         {
             Track.Dispatcher.BeginInvoke(
                 DispatcherPriority.Render,
                 new Action(() =>
                 {
                     Track.Source = null;
-                    Track.Source = Visualize.DrawTrack(e.Track);
+                    Track.Source = Visualize.DrawTrack(args.Track);
                 }));
+        }
+
+        private void OnRaceFinished(object sender, EventArgs args)
+        {
+            ImageCache.ClearCache();
         }
     }
 }

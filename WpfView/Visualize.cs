@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
-using System.Net.WebSockets;
 using System.Windows.Media.Imaging;
 using Controller;
 using Model;
@@ -76,6 +74,8 @@ namespace WpfView
 
                 currentDirection = DetermineDirection(section.SectionType, currentDirection);
 
+                DrawSectionParticipants(x, y, currentDirection, graphics, section);
+
                 DetermineNewCoordinates(ref x, ref y, currentDirection);
             }
 
@@ -84,15 +84,65 @@ namespace WpfView
 
         private static void DrawSection(int x, int y, Direction direction, Graphics graphics, Section section)
         {
-            Bitmap sectionBitmap =
+            Bitmap bitmap =
                 ImageCache.GetImageFromCache(BaseDirectory + FileFromSectionType(section.SectionType, direction));
 
             if (section.SectionType == SectionTypes.LeftCorner || section.SectionType == SectionTypes.RightCorner)
             {
-                RotateSection(sectionBitmap, direction);
+                RotateSection(bitmap, direction);
             }
 
-            graphics.DrawImage(sectionBitmap, x, y, SectionDimensions, SectionDimensions);
+            graphics.DrawImage(bitmap, x, y, SectionDimensions, SectionDimensions);
+        }
+
+        private static void DrawSectionParticipants(int x, int y, Direction direction, Graphics graphics,
+            Section section)
+        {
+            IParticipant leftParticipant = _race.GetSectionData(section).Left;
+            IParticipant rightParticipant = _race.GetSectionData(section).Right;
+
+            if (leftParticipant != null)
+            {
+                (int offsetX, int offsetY) = GetParticipantOffset(0, direction);
+                DrawParticipant(leftParticipant, graphics, direction, x + offsetX, y + offsetY);
+            }
+
+            if (rightParticipant != null)
+            {
+                (int offsetX, int offsetY) = GetParticipantOffset(1, direction);
+                DrawParticipant(rightParticipant, graphics, direction, x + offsetX, y + offsetY);
+            }
+        }
+
+        private static void DrawParticipant(IParticipant participant, Graphics graphics, Direction direction, int xPos,
+            int yPos)
+        {
+            Bitmap bitmap = ImageCache.GetImageFromCache(
+                BaseDirectory + FileFromTeamColor(
+                    participant.TeamColor,
+                    participant?.Equipment?.IsBroken ?? false
+                ));
+
+            RotateSection(bitmap, direction);
+
+            graphics.DrawImage(bitmap, xPos, yPos, ParticipantDimensions, ParticipantDimensions);
+        }
+
+        private static (int x, int y) GetParticipantOffset(int side, Direction currentDirection)
+        {
+            return side switch
+            {
+                0 when currentDirection == Direction.North => (90, 0),
+                0 when currentDirection == Direction.East => (90, 45),
+                0 when currentDirection == Direction.South => (190, 90),
+                0 when currentDirection == Direction.West => (90, 45),
+
+                1 when currentDirection == Direction.North => (190, 0),
+                1 when currentDirection == Direction.East => (90, 190),
+                1 when currentDirection == Direction.South => (45, 190),
+                1 when currentDirection == Direction.West => (90, 190),
+                _ => (0, 0)
+            };
         }
 
         private static string FileFromSectionType(SectionTypes sectionType, Direction direction)
@@ -118,7 +168,23 @@ namespace WpfView
                 SectionTypes.RightCorner => CornerRight,
                 SectionTypes.LeftCorner => CornerLeft,
                 SectionTypes.StartGrid => StartGrid,
+                _ => throw new Exception("Unsupported section type")
             };
+        }
+
+        private static string FileFromTeamColor(TeamColors color, bool isBroken)
+        {
+            return isBroken
+                ? DestroyedCar
+                : color switch
+                {
+                    TeamColors.Blue => BlueCar,
+                    TeamColors.Green => GreenCar,
+                    TeamColors.Red => RedCar,
+                    TeamColors.Yellow => YellowCar,
+                    TeamColors.Grey => GreyCar,
+                    _ => throw new Exception("Unsupported team color")
+                };
         }
 
         private static void RotateSection(Bitmap img, Direction direction)
