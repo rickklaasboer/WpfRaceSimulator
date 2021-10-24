@@ -1,17 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Windows.Threading;
 using Controller;
 using Model;
@@ -23,6 +11,9 @@ namespace WpfView
     /// </summary>
     public partial class MainWindow : Window
     {
+        private readonly CompetitionStatistics _competitionStatistics = new();
+        private readonly RaceStatistics _raceStatistics = new();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -40,7 +31,7 @@ namespace WpfView
             args.Race.DriversChanged += OnDriversChanged;
             args.Race.RaceFinished += OnRaceFinished;
 
-            Dispatcher.Invoke(() => { args.Race.DriversChanged += OnDriversChanged; });
+            Dispatcher.Invoke(() => { args.Race.DriversChanged += ((MainDataContext)DataContext).OnDriversChanged; });
         }
 
         private void OnDriversChanged(object sender, DriversChangedEventArgs args)
@@ -57,6 +48,21 @@ namespace WpfView
         private void OnRaceFinished(object sender, EventArgs args)
         {
             ImageCache.ClearCache();
+        }
+
+        private void MenuItem_Competition_OnClick(object sender, RoutedEventArgs e)
+        {
+            _competitionStatistics.Show();
+        }
+
+        private void MenuItem_Race_OnClick(object sender, RoutedEventArgs e)
+        {
+            _raceStatistics.Show();
+        }
+
+        private void MenuItem_Exit_OnClick(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
         }
     }
 }

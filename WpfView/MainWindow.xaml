@@ -4,9 +4,23 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfView"
+        xmlns:model="clr-namespace:Model;assembly=Model"
         mc:Ignorable="d"
         Title="MainWindow" Height="900" Width="1400">
-    <Grid Background="LightGray">
+    <Window.DataContext>
+        <model:MainDataContext />
+    </Window.DataContext>
+    <Grid Background="#FFFFFF">
+        <DockPanel>
+            <Menu DockPanel.Dock="Top" Height="20" VerticalAlignment="Top">
+                <MenuItem Header="Menu">
+                    <MenuItem Header="Competition statistics" Click="MenuItem_Competition_OnClick" />
+                    <MenuItem Header="Race statistics" Click="MenuItem_Race_OnClick" />
+                    <MenuItem Header="Exit" Click="MenuItem_Exit_OnClick" />
+                </MenuItem>
+            </Menu>
+        </DockPanel>
         <Image x:Name="Track" />
+        <Label Margin="0,20,0,0" Content="{Binding TrackName}" FontSize="24" />
     </Grid>
 </Window>
