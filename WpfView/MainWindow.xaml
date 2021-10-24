@@ -10,7 +10,7 @@
     <Window.DataContext>
         <model:MainDataContext />
     </Window.DataContext>
-    <Grid Background="#FFFFFF">
+    <Grid Background="#AECC48">
         <DockPanel>
             <Menu DockPanel.Dock="Top" Height="20" VerticalAlignment="Top">
                 <MenuItem Header="Menu">
@@ -20,7 +20,7 @@
                 </MenuItem>
             </Menu>
         </DockPanel>
-        <Image x:Name="Track" />
-        <Label Margin="0,20,0,0" Content="{Binding TrackName}" FontSize="24" />
+        <Image Margin="24" x:Name="Track" />
+        <Label Foreground="White" Margin="12,24,0,0" Content="{Binding TrackName}" FontSize="24" />
     </Grid>
 </Window>
