@@ -17,7 +17,7 @@ namespace Controller
         private DateTime _startTime;
         private Random _random;
         private Dictionary<Section, SectionData> _positions = new Dictionary<Section, SectionData>();
-        private Timer _timer = new Timer(500);
+        private Timer _timer = new Timer(250);
 
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
         public event EventHandler<EventArgs> RaceFinished;

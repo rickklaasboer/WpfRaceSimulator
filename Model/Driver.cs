@@ -28,7 +28,7 @@ namespace Model
 
         public bool WillRecover()
         {
-            return new Random().Next(1, 25) == 15;
+            return new Random().Next(1, 10) == 7;
         }
     }
 }
