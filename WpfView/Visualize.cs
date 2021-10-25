@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Windows.Media.Imaging;
@@ -128,19 +129,31 @@ namespace WpfView
             graphics.DrawImage(bitmap, xPos, yPos, ParticipantDimensions, ParticipantDimensions);
         }
 
+        /**
+         * Get offset in pixels
+         *
+         * Accepts 0 (left) or 1 (right) for side
+         */
         private static (int x, int y) GetParticipantOffset(int side, Direction currentDirection)
         {
-            return side switch
+            if (side == 0)
             {
-                0 when currentDirection == Direction.North => (90, 0),
-                0 when currentDirection == Direction.East => (90, 45),
-                0 when currentDirection == Direction.South => (190, 90),
-                0 when currentDirection == Direction.West => (90, 45),
+                return currentDirection switch
+                {
+                    Direction.North => (90, 0),
+                    Direction.East => (90, 45),
+                    Direction.South => (190, 90),
+                    Direction.West => (90, 45),
+                    _ => (0, 0)
+                };
+            }
 
-                1 when currentDirection == Direction.North => (190, 0),
-                1 when currentDirection == Direction.East => (90, 190),
-                1 when currentDirection == Direction.South => (45, 190),
-                1 when currentDirection == Direction.West => (90, 190),
+            return currentDirection switch
+            {
+                Direction.North => (190, 0),
+                Direction.East => (90, 190),
+                Direction.South => (45, 190),
+                Direction.West => (90, 190),
                 _ => (0, 0)
             };
         }
@@ -225,6 +238,8 @@ namespace WpfView
 
             int width = positionsX.Max();
             int height = positionsY.Max();
+
+            Trace.WriteLine($"{width + x}, {height + y}");
 
             return (width + x, height + y);
         }
