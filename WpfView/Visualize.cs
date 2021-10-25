@@ -29,28 +29,26 @@ namespace WpfView
         #endregion imageSizes
 
         #region imagePaths
-
-        private const string BaseDirectory = @"C:\Users\Rick\Documents\git\windesheim-racebaan\WpfView";
-
+        
         // Tracks
-        private const string StraightHorizontal = @"\Resources\Tracks\straight-horizontal.png";
-        private const string StraightVertical = @"\Resources\Tracks\straight-vertical.png";
+        private const string StraightHorizontal = @".\Resources\Tracks\straight-horizontal.png";
+        private const string StraightVertical = @".\Resources\Tracks\straight-vertical.png";
 
-        private const string FinishHorizontal = @"\Resources\Tracks\finish-horizontal.png";
-        private const string FinishVertical = @"\Resources\Tracks\finish-vertical.png";
+        private const string FinishHorizontal = @".\Resources\Tracks\finish-horizontal.png";
+        private const string FinishVertical = @".\Resources\Tracks\finish-vertical.png";
 
-        private const string StartGrid = @"\Resources\Tracks\start-grid.png";
+        private const string StartGrid = @".\Resources\Tracks\start-grid.png";
 
-        private const string CornerRight = @"\Resources\Tracks\corner-right.png";
-        private const string CornerLeft = @"\Resources\Tracks\corner-left.png";
+        private const string CornerRight = @".\Resources\Tracks\corner-right.png";
+        private const string CornerLeft = @".\Resources\Tracks\corner-left.png";
 
         // Cars
-        private const string BlueCar = @"\Resources\Cars\car-blue.png";
-        private const string GreenCar = @"\Resources\Cars\car-green.png";
-        private const string GreyCar = @"\Resources\Cars\car-grey.png";
-        private const string RedCar = @"\Resources\Cars\car-red.png";
-        private const string YellowCar = @"\Resources\Cars\car-yellow.png";
-        private const string DestroyedCar = @"\Resources\Cars\car-destroyed.png";
+        private const string BlueCar = @".\Resources\Cars\car-blue.png";
+        private const string GreenCar = @".\Resources\Cars\car-green.png";
+        private const string GreyCar = @".\Resources\Cars\car-grey.png";
+        private const string RedCar = @".\Resources\Cars\car-red.png";
+        private const string YellowCar = @".\Resources\Cars\car-yellow.png";
+        private const string DestroyedCar = @".\Resources\Cars\car-destroyed.png";
 
         #endregion
 
@@ -86,7 +84,7 @@ namespace WpfView
         private static void DrawSection(int x, int y, Direction direction, Graphics graphics, Section section)
         {
             Bitmap bitmap =
-                ImageCache.GetImageFromCache(BaseDirectory + FileFromSectionType(section.SectionType, direction));
+                ImageCache.GetImageFromCache(FileFromSectionType(section.SectionType, direction));
 
             if (section.SectionType == SectionTypes.LeftCorner || section.SectionType == SectionTypes.RightCorner)
             {
@@ -119,7 +117,7 @@ namespace WpfView
             int yPos)
         {
             Bitmap bitmap = ImageCache.GetImageFromCache(
-                BaseDirectory + FileFromTeamColor(
+                FileFromTeamColor(
                     participant.TeamColor,
                     participant?.Equipment?.IsBroken ?? false
                 ));
