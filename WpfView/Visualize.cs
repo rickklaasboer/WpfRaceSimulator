@@ -136,26 +136,23 @@ namespace WpfView
          */
         private static (int x, int y) GetParticipantOffset(int side, Direction currentDirection)
         {
-            if (side == 0)
-            {
-                return currentDirection switch
+            return side == 0
+                ? currentDirection switch
                 {
                     Direction.North => (90, 0),
                     Direction.East => (90, 45),
                     Direction.South => (190, 90),
                     Direction.West => (90, 45),
                     _ => (0, 0)
+                }
+                : currentDirection switch
+                {
+                    Direction.North => (190, 0),
+                    Direction.East => (90, 190),
+                    Direction.South => (45, 190),
+                    Direction.West => (90, 190),
+                    _ => (0, 0)
                 };
-            }
-
-            return currentDirection switch
-            {
-                Direction.North => (190, 0),
-                Direction.East => (90, 190),
-                Direction.South => (45, 190),
-                Direction.West => (90, 190),
-                _ => (0, 0)
-            };
         }
 
         private static string FileFromSectionType(SectionTypes sectionType, Direction direction)
