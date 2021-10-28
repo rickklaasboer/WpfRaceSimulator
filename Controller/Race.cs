@@ -12,8 +12,8 @@ namespace Controller
         public Dictionary<IParticipant, int> DrivenLaps = new Dictionary<IParticipant, int>();
         public Dictionary<IParticipant, int> Finished = new Dictionary<IParticipant, int>();
         public int Laps;
+        public List<IParticipant> Participants;
 
-        private List<IParticipant> Participants;
         private DateTime _startTime;
         private Random _random;
         private Dictionary<Section, SectionData> _positions = new Dictionary<Section, SectionData>();
@@ -22,7 +22,7 @@ namespace Controller
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
         public event EventHandler<EventArgs> RaceFinished;
         public event EventHandler<ParticipantFinishedEventArgs> ParticipantFinished;
-        private event EventHandler<FinishReachedEventArgs> FinishReached;
+        public event EventHandler<FinishReachedEventArgs> FinishReached;
 
         public Race(Track track, List<IParticipant> participant, int laps)
         {
@@ -50,6 +50,8 @@ namespace Controller
 
         public void CleanUp()
         {
+            OnTimedEvent(this, null);
+            
             DriversChanged = null;
             RaceFinished = null;
             ParticipantFinished = null;
@@ -223,8 +225,11 @@ namespace Controller
         {
             var participant = args.Participant;
 
+            List<int> points = (Enumerable.Range(1, Participants.Count + 1).Reverse()).ToList();
+
             int value = Finished.Count + 1;
             Finished[participant] = value;
+            participant.Points += points[value];
 
             if (Finished.Count >= Participants.Count)
             {

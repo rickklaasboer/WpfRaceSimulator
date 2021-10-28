@@ -11,8 +11,8 @@ namespace WpfView
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly CompetitionStatistics _competitionStatistics = new();
-        private readonly RaceStatistics _raceStatistics = new();
+        private CompetitionStatistics _competitionStatistics;
+        private RaceStatistics _raceStatistics;
 
         public MainWindow()
         {
@@ -52,11 +52,19 @@ namespace WpfView
 
         private void MenuItem_Competition_OnClick(object sender, RoutedEventArgs e)
         {
+            _competitionStatistics = new CompetitionStatistics();
+
+            Data.NextRaceEvent += ((CompetitionDataContext)_competitionStatistics.DataContext).OnNextRaceEvent;
+
+            ((CompetitionDataContext)_competitionStatistics.DataContext).OnNextRaceEvent(null,
+                new NextRaceEventArgs(Data.CurrentRace));
+
             _competitionStatistics.Show();
         }
 
         private void MenuItem_Race_OnClick(object sender, RoutedEventArgs e)
         {
+            _raceStatistics = new RaceStatistics();
             _raceStatistics.Show();
         }
 

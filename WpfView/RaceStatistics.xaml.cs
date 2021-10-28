@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using Controller;
+using Model;
 
 namespace WpfView
 {
