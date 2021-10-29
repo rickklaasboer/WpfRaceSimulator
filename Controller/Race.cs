@@ -12,8 +12,8 @@ namespace Controller
         public Dictionary<IParticipant, int> DrivenLaps = new Dictionary<IParticipant, int>();
         public Dictionary<IParticipant, int> Finished = new Dictionary<IParticipant, int>();
         public int Laps;
+        public List<IParticipant> Participants;
 
-        private List<IParticipant> Participants;
         private DateTime _startTime;
         private Random _random;
         private Dictionary<Section, SectionData> _positions = new Dictionary<Section, SectionData>();
@@ -22,7 +22,7 @@ namespace Controller
         public event EventHandler<DriversChangedEventArgs> DriversChanged;
         public event EventHandler<EventArgs> RaceFinished;
         public event EventHandler<ParticipantFinishedEventArgs> ParticipantFinished;
-        private event EventHandler<FinishReachedEventArgs> FinishReached;
+        public event EventHandler<FinishReachedEventArgs> FinishReached;
 
         public Race(Track track, List<IParticipant> participant, int laps)
         {
@@ -76,60 +76,58 @@ namespace Controller
             foreach (var (section, sectionData) in new Dictionary<Section, SectionData>(_positions).Reverse())
             {
                 RemoveFinishedParticipants(sectionData);
+                MoveSingleParticipant(Side.Left, sectionData, section);
+                MoveSingleParticipant(Side.Right, sectionData, section);
+            }
+        }
 
-                if (sectionData.Left != null && !sectionData.Left.Equipment.IsBroken &&
-                    GetSectionData(Track.GetNextSection(section)).Left == null)
+        private void MoveSingleParticipant(Side side, SectionData sectionData, Section section)
+        {
+            (IParticipant participant, int distance) = sectionData.GetDataBySide(side);
+            (IParticipant nextParticipant, int _) = GetSectionData(Track.GetNextSection(section)).GetDataBySide(side);
+
+            if (participant == null) return;
+
+            var newDistance = distance + participant.GetMovementSpeed();
+
+            if (!participant.Equipment.IsBroken && nextParticipant == null)
+            {
+                if (newDistance >= 100)
                 {
-                    var newDistanceLeft = sectionData.DistanceLeft + sectionData.Left.GetMovementSpeed();
+                    var nextSection = Track.GetNextSection(section);
+                    var nextSectionData = GetSectionData(nextSection);
 
-                    if (newDistanceLeft >= 100)
+                    if (nextSection.SectionType == SectionTypes.Finish)
                     {
-                        var nextSection = Track.GetNextSection(section);
-                        var nextSectionData = GetSectionData(nextSection);
-
-                        if (nextSection.SectionType == SectionTypes.Finish)
-                        {
-                            FinishReached?.Invoke(this, new FinishReachedEventArgs(sectionData.Left));
-                        }
-
-                        nextSectionData.Left = sectionData.Left;
-                        nextSectionData.DistanceLeft = 0;
-
-                        sectionData.Left = null;
-                        sectionData.DistanceLeft = 0;
+                        FinishReached?.Invoke(this, new FinishReachedEventArgs(participant));
                     }
-                    else
-                    {
-                        sectionData.DistanceLeft += newDistanceLeft;
-                    }
+
+                    nextSectionData.SetDataBySide(side, participant, 0);
+                    sectionData.SetDataBySide(side, null, 0);
+                }
+                else
+                {
+                    sectionData.SetDataBySide(side, participant, newDistance);
+                }
+            }
+            else if (newDistance >= 100 && nextParticipant != null)
+            {
+                var nextSection = Track.GetNextSection(section);
+                var nextNextSection = Track.GetNextSection(nextSection);
+
+                var nextNextSectionData = GetSectionData(nextNextSection);
+
+                if (nextSection.SectionType == SectionTypes.Finish)
+                {
+                    FinishReached?.Invoke(this, new FinishReachedEventArgs(participant));
                 }
 
-                if (sectionData.Right != null && !sectionData.Right.Equipment.IsBroken &&
-                    GetSectionData(Track.GetNextSection(section)).Right == null)
-                {
-                    var newDistanceRight = sectionData.DistanceRight + sectionData.Right.GetMovementSpeed();
-
-                    if (newDistanceRight >= 100)
-                    {
-                        var nextSection = Track.GetNextSection(section);
-                        var nextSectionData = GetSectionData(nextSection);
-
-                        if (nextSection.SectionType == SectionTypes.Finish)
-                        {
-                            FinishReached?.Invoke(this, new FinishReachedEventArgs(sectionData.Right));
-                        }
-
-                        nextSectionData.Right = sectionData.Right;
-                        nextSectionData.DistanceRight = 0;
-
-                        sectionData.Right = null;
-                        sectionData.DistanceRight = 0;
-                    }
-                    else
-                    {
-                        sectionData.DistanceRight += newDistanceRight;
-                    }
-                }
+                nextNextSectionData.SetDataBySide(side, participant, 0);
+                sectionData.SetDataBySide(side, null, 0);
+            }
+            else
+            {
+                sectionData.SetDataBySide(side, participant, newDistance);
             }
         }
 
@@ -223,8 +221,11 @@ namespace Controller
         {
             var participant = args.Participant;
 
+            List<int> points = (Enumerable.Range(1, Participants.Count + 1).Reverse()).ToList();
+
             int value = Finished.Count + 1;
             Finished[participant] = value;
+            participant.Points += points[value];
 
             if (Finished.Count >= Participants.Count)
             {

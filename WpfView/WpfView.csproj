@@ -12,31 +12,57 @@
 
     <ItemGroup>
       <None Remove="Resources\Cars\car-blue.png" />
-      <Content Include="Resources\Cars\car-blue.png" />
+      <Content Include="Resources\Cars\car-blue.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="Resources\Cars\car-destroyed.png" />
-      <Content Include="Resources\Cars\car-destroyed.png" />
+      <Content Include="Resources\Cars\car-destroyed.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="Resources\Cars\car-green.png" />
-      <Content Include="Resources\Cars\car-green.png" />
+      <Content Include="Resources\Cars\car-green.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="Resources\Cars\car-grey.png" />
-      <Content Include="Resources\Cars\car-grey.png" />
+      <Content Include="Resources\Cars\car-grey.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="Resources\Cars\car-red.png" />
-      <Content Include="Resources\Cars\car-red.png" />
+      <Content Include="Resources\Cars\car-red.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="Resources\Cars\car-yellow.png" />
-      <Content Include="Resources\Cars\car-yellow.png" />
+      <Content Include="Resources\Cars\car-yellow.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="Resources\Tracks\corner-left.png" />
-      <Content Include="Resources\Tracks\corner-left.png" />
+      <Content Include="Resources\Tracks\corner-left.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="Resources\Tracks\corner-right.png" />
-      <Content Include="Resources\Tracks\corner-right.png" />
+      <Content Include="Resources\Tracks\corner-right.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="Resources\Tracks\finish-horizontal.png" />
-      <Content Include="Resources\Tracks\finish-horizontal.png" />
+      <Content Include="Resources\Tracks\finish-horizontal.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="Resources\Tracks\finish-vertical.png" />
-      <Content Include="Resources\Tracks\finish-vertical.png" />
+      <Content Include="Resources\Tracks\finish-vertical.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="Resources\Tracks\start-grid.png" />
-      <Content Include="Resources\Tracks\start-grid.png" />
+      <Content Include="Resources\Tracks\start-grid.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="Resources\Tracks\straight-horizontal.png" />
-      <Content Include="Resources\Tracks\straight-horizontal.png" />
+      <Content Include="Resources\Tracks\straight-horizontal.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
       <None Remove="Resources\Tracks\straight-vertical.png" />
-      <Content Include="Resources\Tracks\straight-vertical.png" />
+      <Content Include="Resources\Tracks\straight-vertical.png">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
     </ItemGroup>
 
     <ItemGroup>

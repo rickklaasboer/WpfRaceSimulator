@@ -8,6 +8,8 @@ namespace Model
         public List<IParticipant> Participants;
         public Queue<Track> Tracks = new Queue<Track>();
 
+        public event EventHandler CompetitionFinished;
+
         public Track NextTrack()
         {
             try
@@ -16,6 +18,7 @@ namespace Model
             }
             catch (InvalidOperationException)
             {
+                CompetitionFinished?.Invoke(this, EventArgs.Empty);
                 return null;
             }
         }
