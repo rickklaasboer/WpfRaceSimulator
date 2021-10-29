@@ -53,11 +53,11 @@ namespace WpfView
         private void MenuItem_Competition_OnClick(object sender, RoutedEventArgs e)
         {
             _competitionStatistics = new CompetitionStatistics();
+            CompetitionDataContext competitionDataContext = (CompetitionDataContext)_competitionStatistics.DataContext;
 
-            Data.NextRaceEvent += ((CompetitionDataContext)_competitionStatistics.DataContext).OnNextRaceEvent;
-
-            ((CompetitionDataContext)_competitionStatistics.DataContext).OnNextRaceEvent(null,
-                new NextRaceEventArgs(Data.CurrentRace));
+            Data.NextRaceEvent += competitionDataContext.OnNextRaceEvent;
+            competitionDataContext.OnNextRaceEvent(null, new NextRaceEventArgs(Data.CurrentRace));
+            Data.CurrentRace.DriversChanged += competitionDataContext.OnDriversChanged;
 
             _competitionStatistics.Show();
         }
@@ -65,6 +65,12 @@ namespace WpfView
         private void MenuItem_Race_OnClick(object sender, RoutedEventArgs e)
         {
             _raceStatistics = new RaceStatistics();
+            RaceDataContext raceDataContext = (RaceDataContext)_raceStatistics.DataContext;
+
+            Data.NextRaceEvent += raceDataContext.OnNextRaceEvent;
+            raceDataContext.OnNextRaceEvent(null, new NextRaceEventArgs(Data.CurrentRace));
+            Data.CurrentRace.DriversChanged += raceDataContext.OnDriversChanged;
+
             _raceStatistics.Show();
         }
 

@@ -234,8 +234,6 @@ namespace WpfView
             int width = positionsX.Max();
             int height = positionsY.Max();
 
-            Trace.WriteLine($"{width + x}, {height + y}");
-
             return (width + x, height + y);
         }
 

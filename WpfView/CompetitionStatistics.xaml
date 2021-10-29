@@ -75,7 +75,7 @@
                     <Label FontSize="16" Content="{Binding FastestParticipant.Name}" />
                 </Grid>
                 <Grid Grid.Column="1">
-                    <Label FontSize="16" Content="{Binding FastestParticipant.Points}" />
+                    <Label FontSize="16" Content="{Binding FastestParticipant.Equipment.Performance}" />
                 </Grid>
             </Grid>
         </Grid>

@@ -6,7 +6,71 @@
         xmlns:local="clr-namespace:WpfView"
         mc:Ignorable="d"
         Title="RaceStatistics" Height="450" Width="800">
-    <Grid>
-        
+    <Window.DataContext>
+        <local:RaceDataContext />
+    </Window.DataContext>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Label Grid.Row="0" FontWeight="Bold" FontSize="16">Participants in this competition</Label>
+            <ListView Grid.Row="1" ItemsSource="{Binding Participants}">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Name}" />
+                        <GridViewColumn Header="Team color" Width="150" DisplayMemberBinding="{Binding TeamColor}" />
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Row="0" Grid.Column="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" FontWeight="Bold" FontSize="16">Driven laps by participants</Label>
+                <ListView Grid.Row="1" ItemsSource="{Binding DrivenLaps}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Key.Name}" />
+                            <GridViewColumn Header="# of laps" Width="150" DisplayMemberBinding="{Binding Value}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+
+            <Grid Grid.Row="0" Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" FontWeight="Bold" FontSize="16">Finished participants</Label>
+                <ListView Grid.Row="1" ItemsSource="{Binding Finished}">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Name" Width="150" DisplayMemberBinding="{Binding Key.Name}" />
+                            <GridViewColumn Header="Position" Width="150" DisplayMemberBinding="{Binding Value}" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </Grid>
+        </Grid>
     </Grid>
 </Window>
