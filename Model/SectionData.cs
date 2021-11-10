@@ -20,27 +20,12 @@ namespace Model
         {
         }
 
-        public SectionData(IParticipant participant, int distance, bool right)
-        {
-            if (right)
-            {
-                Right = participant;
-                DistanceRight = distance;
-            }
-            else
-            {
-                Left = participant;
-                DistanceRight = distance;
-            }
-        }
-
         public (IParticipant, int) GetDataBySide(Side side)
         {
             return side switch
             {
                 Side.Left => (Left, DistanceLeft),
                 Side.Right => (Right, DistanceRight),
-                _ => throw new InvalidEnumArgumentException(),
             };
         }
 

@@ -25,7 +25,7 @@ namespace WpfView
                 Cache.Add(key, new Bitmap(key));
             }
 
-            return (Bitmap) Cache[key].Clone();
+            return (Bitmap)Cache[key].Clone();
         }
 
         public static Bitmap CreateBitmap(int width, int height)

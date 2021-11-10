@@ -19,16 +19,19 @@ namespace ControllerTest
         public void NextTrack_EmptyQueue_ReturnNull()
         {
             var result = _competition.NextTrack();
-            
+
             Assert.IsNull(result);
         }
 
         [Test]
         public void NextTrack_OneInQueue_ReturnTrack()
         {
-            Track track = new Track("Track 1", null);
-            
-            _competition.Tracks = new Queue<Track>(new Track[]
+            Track track = new Track("Track 1", new[]
+            {
+                SectionTypes.StartGrid
+            });
+
+            _competition.Tracks = new Queue<Track>(new[]
             {
                 track
             });
@@ -40,26 +43,35 @@ namespace ControllerTest
         [Test]
         public void NextTrack_OneInQueue_RemoveTrackFromQueue()
         {
-            Track track = new Track("Track 1", null);
-            
-            _competition.Tracks = new Queue<Track>(new Track[]
+            Track track = new Track("Track 1", new[]
+            {
+                SectionTypes.StartGrid
+            });
+
+            _competition.Tracks = new Queue<Track>(new[]
             {
                 track
             });
 
             var result = _competition.NextTrack();
             result = _competition.NextTrack();
-            
+
             Assert.IsNull(result);
         }
 
         [Test]
         public void NextTrack_TwoInQueue_ReturnNextTrack()
         {
-            Track firstTrack = new Track("Track 1", null);
-            Track secondTrack = new Track("Track 2", null);
-            
-            _competition.Tracks = new Queue<Track>(new Track[]
+            Track firstTrack = new Track("Track 1", new[]
+            {
+                SectionTypes.StartGrid
+            });
+            Track secondTrack = new Track("Track 2", new[]
+            {
+                SectionTypes.StartGrid
+            });
+
+            _competition.Tracks = new Queue<Track>(new[]
             {
                 firstTrack,
                 secondTrack
@@ -67,7 +79,7 @@ namespace ControllerTest
 
             var result1 = _competition.NextTrack();
             var result2 = _competition.NextTrack();
-            
+
             Assert.AreEqual(firstTrack, result1);
             Assert.AreEqual(secondTrack, result2);
         }
