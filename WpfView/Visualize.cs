@@ -29,7 +29,7 @@ namespace WpfView
         #endregion imageSizes
 
         #region imagePaths
-        
+
         // Tracks
         private const string StraightHorizontal = @".\Resources\Tracks\straight-horizontal.png";
         private const string StraightVertical = @".\Resources\Tracks\straight-vertical.png";
@@ -59,12 +59,12 @@ namespace WpfView
 
         public static BitmapSource DrawTrack(Track track)
         {
-            (int width, int height) = DetermineTrackSize(track);
+            (int width, int height, int startX, int startY) = DetermineTrackSize(track);
 
-            Bitmap bitmap = ImageCache.CreateBitmap(width + 600, height + 66);
+            Bitmap bitmap = ImageCache.CreateBitmap(width, height);
             Graphics graphics = Graphics.FromImage(bitmap);
 
-            int x = 666, y = 66;
+            int x = startX, y = startY;
             Direction currentDirection = Direction.East;
 
             foreach (var section in track.Sections)
@@ -211,14 +211,17 @@ namespace WpfView
             }
         }
 
-        private static (int width, int height) DetermineTrackSize(Track track)
+        private static (int width, int height, int startX, int startY) DetermineTrackSize(Track track)
         {
             List<int> positionsX = new List<int>();
             List<int> positionsY = new List<int>();
 
-            int x = 600;
-            int y = 200;
+            int x = 0;
+            int y = 0;
 
+            int width = 0;
+            int height = 0;
+            
             Direction currentDirection = Direction.East;
 
             foreach (var section in track.Sections)
@@ -226,15 +229,39 @@ namespace WpfView
                 positionsX.Add(x);
                 positionsY.Add(y);
 
+                switch (currentDirection)
+                {
+                    case Direction.North:
+                        if (y <= 0)
+                        {
+                            height += SectionDimensions;
+                        }
+
+                        break;
+                    case Direction.East:
+                        width += SectionDimensions;
+                        break;
+                    case Direction.South:
+                        height += SectionDimensions;
+                        break;
+                    case Direction.West:
+                        if (x <= 0)
+                        {
+                            width += SectionDimensions;
+                        }
+
+                        break;
+                }
+
                 currentDirection = DetermineDirection(section.SectionType, currentDirection);
 
                 DetermineNewCoordinates(ref x, ref y, currentDirection);
             }
+            
+            int startX = Math.Abs(positionsX.Min());
+            int startY = Math.Abs(positionsY.Min());
 
-            int width = positionsX.Max();
-            int height = positionsY.Max();
-
-            return (width + x, height + y);
+            return (width, height, startX, startY);
         }
 
         private static void DetermineNewCoordinates(ref int x, ref int y, Direction currentDirection)
