@@ -23,10 +23,10 @@ namespace Controller
         {
             Competition.Participants = new List<IParticipant>
             {
-                new Driver("Pieter", new Car(1, 1, 25, false), TeamColors.Blue),
-                new Driver("Henk", new Car(1, 1, 25, false), TeamColors.Green),
-                new Driver("Max", new Car(1, 1, 25, false), TeamColors.Red),
-                new Driver("Tjeerd", new Car(1, 1, 25, false), TeamColors.Yellow)
+                new Driver("Finn", new Car(1, 1, 25, false), TeamColors.Blue),
+                new Driver("James", new Car(1, 1, 25, false), TeamColors.Green),
+                new Driver("Liam", new Car(1, 1, 25, false), TeamColors.Red),
+                new Driver("Noah", new Car(1, 1, 25, false), TeamColors.Yellow)
             };
         }
 
@@ -80,7 +80,7 @@ namespace Controller
 
             if (track != null)
             {
-                CurrentRace = new Race(track, Competition.Participants, new Random().Next(2, 5));
+                CurrentRace = new Race(track, Competition.Participants, 2);
                 NextRaceEvent?.Invoke(null, new NextRaceEventArgs(CurrentRace));
                 CurrentRace.Start();
             }

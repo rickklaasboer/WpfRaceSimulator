@@ -27,8 +27,8 @@ namespace ControllerTest
         [Test]
         public void SectionData_GetDataBySide_GetsDataBySide()
         {
-            (var rightParticipant, var rightDistance) = _sectionData.GetDataBySide(Side.Right);
-            (var leftParticipant, var leftDistance) = _sectionData.GetDataBySide(Side.Left);
+            (IParticipant rightParticipant, int rightDistance) = _sectionData.GetDataBySide(Side.Right);
+            (IParticipant leftParticipant, int leftDistance) = _sectionData.GetDataBySide(Side.Left);
 
             Assert.IsInstanceOf<Driver>(rightParticipant);
             Assert.IsInstanceOf<Driver>(leftParticipant);
